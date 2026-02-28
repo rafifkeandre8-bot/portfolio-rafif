@@ -1,0 +1,168 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2c7be5;
+  color: white;
+  padding: 15px 40px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+  background: white;
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: fadeIn 1s ease;
+}
+
+img {
+  margin-top: 20px;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+/* BUTTON */
+button {
+  padding: 12px 25px;
+  border: none;
+  background: #2c7be5;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+section {
+  scroll-margin-top: 80px;
+}
+
+.hero {
+  text-align: center;
+}
+
+.profile {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 4px solid #2c7be5;
+}
+
+.skill {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.bar {
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: #2c7be5;
+  width: 0;
+  animation: load 2s forwards;
+}
+
+/* PERSENTASE SKILL */
+.html {
+  animation: html 2s forwards;
+}
+
+.css {
+  animation: css 2s forwards;
+}
+
+.js {
+  animation: js 2s forwards;
+}
+
+@keyframes html {
+  to {
+    width: 90%;
+  }
+}
+
+@keyframes css {
+  to {
+    width: 75%;
+  }
+}
+
+@keyframes js {
+  to {
+    width: 60%;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
