@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Treatment Smart Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f1f5f9
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 15px;
+            font-size: 20px
+        }
+
+        .container {
+            padding: 20px
+        }
+
+        .grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr))
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .08)
+        }
+
+        .big {
+            font-size: 40px;
+            font-weight: bold
+        }
+
+        .progress {
+            height: 10px;
+            background: #ddd;
+            border-radius: 10px;
+            margin-top: 8px
+        }
+
+        .bar {
+            height: 100%;
+            border-radius: 10px
+        }
+
+        .ok {
+            color: green
+        }
+
+        .warn {
+            color: orange
+        }
+
+        .fail {
+            color: red
+        }
+
+        .traffic {
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        td,
+        th {
+            border-bottom: 1px solid #ddd;
+            padding: 6px;
+            text-align: center
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0ea5e9;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 5px
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>💧 Smart Water Treatment Dashboard</header>
+
+    <div class="container">
+
+        <!-- SENSOR DASHBOARD -->
+        <div class="grid">
+
+            <div class="card">
+                <h3>pH OUT</h3>
+                <div id="phVal" class="big">7</div>
+                <div class="progress">
+                    <div id="phBar" class="bar"></div>
+                </div>
+                <div id="phStatus"></div>
+            </div>
+
+            <div class="card">
+                <h3>TDS OUT</h3>
+                <div id="tdsVal" class="big">0</div>
+                <div class="progress">
+                    <div id="tdsBar" class="bar"></div>
+                </div>
+                <div id="tdsStatus"></div>
+            </div>
+
+            <div class="card">
+                <h3>Turbidity OUT</h3>
+                <div id="turbVal" class="big">0</div>
+                <div class="progress">
+                    <div id="turbBar" class="bar"></div>
+                </div>
+                <div id="turbStatus"></div>
+            </div>
+
+            <div class="card">
+                <h3>WQI SCORE</h3>
+                <div id="wqi" class="big">0</div>
+            </div>
+
+            <div class="card">
+                <h3>Traffic Light</h3>
+                <div id="traffic" class="traffic">OK</div>
+            </div>
+
+            <div class="card">
+                <h3>System Status</h3>
+                V-01: <b id="v1"></b><br>
+                V-02: <b id="v2"></b><br>
+                Recirculation: <b id="recirc"></b><br>
+                EC Confidence: <b id="ec"></b>
+            </div>
+
+            <div class="card">
+                <h3>Solar System</h3>
+                Battery: <span id="battery"></span>%<br>
+                Panel: <span id="solar"></span>
+            </div>
+
+        </div>
+
+        <br>
+
+        <!-- CHART -->
+        <div class="card">
+            <canvas id="chart"></canvas>
+        </div>
+
+        <br>
+
+        <!-- INLET VS OUTLET -->
+        <div class="card">
+            <h3>Inlet vs Outlet</h3>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Inlet</th>
+                    <th>Outlet</th>
+                    <th>Efficiency</th>
+                </tr>
+                <tr>
+                    <td>pH</td>
+                    <td id="phIn"></td>
+                    <td id="phOut"></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>TDS</td>
+                    <td id="tdsIn"></td>
+                    <td id="tdsOut"></td>
+                    <td id="tdsEff"></td>
+                </tr>
+                <tr>
+                    <td>Turbidity</td>
+                    <td id="turbIn"></td>
+                    <td id="turbOut"></td>
+                    <td id="turbEff"></td>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+
+        <!-- BATCH LOG -->
+        <div class="card">
+            <h3>Batch Log</h3>
+            <button onclick="exportCSV()">Export CSV</button>
+            <table id="logTable">
+                <tr>
+                    <th>Time</th>
+                    <th>WQI</th>
+                    <th>Status</th>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <h3>Calibration</h3>
+            <button onclick="calibrate()">Set Clean Water Baseline</button>
+            <p id="calStatus">Belum kalibrasi</p>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <h3>Scan Dashboard</h3>
+            <div id="qrcode"></div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+
+        /* ========= CHART ========= */
+        const chart = new Chart(document.getElementById("chart"), {
+            type: 'line',
+            data: {
+                labels: [], datasets: [
+                    { label: 'pH Out', data: [], tension: .3 },
+                    { label: 'TDS Out', data: [], tension: .3 },
+                    { label: 'WQI', data: [], tension: .3 }
+                ]
+            }
+        });
+
+        /* ========= UTIL ========= */
+        function rand(a, b) { return (Math.random() * (b - a) + a).toFixed(2) }
+
+        function statusColor(val, type) {
+            if (type === "ph") {
+                if (val >= 6.5 && val <= 8.5) return ["ok", "green", "OK"];
+                if (val >= 6 && val <= 9) return ["warn", "orange", "WARNING"];
+                return ["fail", "red", "FAIL"];
+            }
+            if (type === "tds") {
+                if (val < 500) return ["ok", "green", "OK"];
+                if (val < 700) return ["warn", "orange", "WARNING"];
+                return ["fail", "red", "FAIL"];
+            }
+            if (type === "turb") {
+                if (val < 5) return ["ok", "green", "OK"];
+                if (val < 8) return ["warn", "orange", "WARNING"];
+                return ["fail", "red", "FAIL"];
+            }
+        }
+
+        /* ========= WQI ========= */
+        function calcWQI(ph, tds, turb) {
+            let score = 100;
+            score -= Math.abs(7 - ph) * 10;
+            score -= tds / 20;
+            score -= turb * 5;
+            return Math.max(0, Math.min(100, score)).toFixed(0);
+        }
+
+        /* ========= TRAFFIC ========= */
+        function updateTraffic(wqi) {
+            const t = document.getElementById("traffic");
+            if (wqi > 80) { t.style.background = "green"; t.innerText = "GOOD"; }
+            else if (wqi > 50) { t.style.background = "orange"; t.innerText = "WARNING"; }
+            else { t.style.background = "red"; t.innerText = "BAD"; }
+        }
+
+        /* ========= TOAST ========= */
+        function toast(msg) {
+            const t = document.getElementById("toast");
+            t.innerText = msg;
+            t.style.display = "block";
+            setTimeout(() => t.style.display = "none", 4000);
+        }
+
+        /* ========= SIMULASI ========= */
+        let logs = [];
+
+        function update() {
+
+            let phOut = parseFloat(rand(5.5, 9));
+            let tdsOut = parseFloat(rand(200, 800));
+            let turbOut = parseFloat(rand(1, 10));
+
+            let phIn = parseFloat(rand(5, 9));
+            let tdsIn = parseFloat(rand(600, 1500));
+            let turbIn = parseFloat(rand(8, 20));
+
+            /* update numbers */
+            phVal.innerText = phOut;
+            tdsVal.innerText = tdsOut;
+            turbVal.innerText = turbOut;
+
+            phInEl = phIn; // just helper
+
+            document.getElementById("phIn").innerText = phIn;
+            document.getElementById("phOut").innerText = phOut;
+            document.getElementById("tdsIn").innerText = tdsIn;
+            document.getElementById("tdsOut").innerText = tdsOut;
+            document.getElementById("turbIn").innerText = turbIn;
+            document.getElementById("turbOut").innerText = turbOut;
+
+            /* efficiency */
+            document.getElementById("tdsEff").innerText =
+                ((tdsIn - tdsOut) / tdsIn * 100).toFixed(0) + "%";
+            document.getElementById("turbEff").innerText =
+                ((turbIn - turbOut) / turbIn * 100).toFixed(0) + "%";
+
+            /* status */
+            let s1 = statusColor(phOut, "ph");
+            phStatus.innerHTML = `<span class="${s1[0]}">${s1[2]}</span>`;
+            phBar.style.width = (phOut * 10) + "%";
+            phBar.style.background = s1[1];
+
+            let s2 = statusColor(tdsOut, "tds");
+            tdsStatus.innerHTML = `<span class="${s2[0]}">${s2[2]}</span>`;
+            tdsBar.style.width = (tdsOut / 10) + "%";
+            tdsBar.style.background = s2[1];
+
+            let s3 = statusColor(turbOut, "turb");
+            turbStatus.innerHTML = `<span class="${s3[0]}">${s3[2]}</span>`;
+            turbBar.style.width = (turbOut * 10) + "%";
+            turbBar.style.background = s3[1];
+
+            /* WQI */
+            let wqi = calcWQI(phOut, tdsOut, turbOut);
+            document.getElementById("wqi").innerText = wqi;
+            updateTraffic(wqi);
+
+            /* valve & system */
+            v1.innerText = Math.random() > 0.5 ? "OPEN" : "CLOSED";
+            v2.innerText = Math.random() > 0.5 ? "OPEN" : "CLOSED";
+            recirc.innerText = Math.random() > 0.5 ? "ACTIVE" : "STANDBY";
+            ec.innerText = rand(80, 99) + "%";
+
+            /* solar */
+            battery.innerText = rand(40, 100);
+            solar.innerText = Math.random() > 0.5 ? "Charging" : "Idle";
+
+            /* chart */
+            chart.data.labels.push(new Date().toLocaleTimeString());
+            chart.data.datasets[0].data.push(phOut);
+            chart.data.datasets[1].data.push(tdsOut);
+            chart.data.datasets[2].data.push(wqi);
+
+            if (chart.data.labels.length > 15) {
+                chart.data.labels.shift();
+                chart.data.datasets.forEach(d => d.data.shift());
+            }
+            chart.update();
+
+            /* batch complete simulation */
+            if (Math.random() > 0.7) {
+                logs.push({ time: new Date().toLocaleTimeString(), wqi, status: wqi > 80 ? "OK" : "CHECK" });
+                addLog(logs[logs.length - 1]);
+                toast("Batch selesai — laporan dikirim (simulasi Telegram)");
+            }
+
+        }
+
+        function addLog(l) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${l.time}</td><td>${l.wqi}</td><td>${l.status}</td>`;
+            document.getElementById("logTable").appendChild(row);
+        }
+
+        /* CSV EXPORT */
+        function exportCSV() {
+            let csv = "Time,WQI,Status\n";
+            logs.forEach(l => csv += `${l.time},${l.wqi},${l.status}\n`);
+            const blob = new Blob([csv]);
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "batch_log.csv";
+            a.click();
+        }
+
+        /* calibration */
+        function calibrate() {
+            document.getElementById("calStatus").innerText = "Baseline diset ✅";
+        }
+
+        /* QR */
+        new QRCode(document.getElementById("qrcode"), window.location.href);
+
+        setInterval(update, 3000);
+
+    </script>
+
+</body>
+
+</html>
