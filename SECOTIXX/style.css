@@ -1,0 +1,133 @@
+/* ════════════════════════════════
+   BAGIAN 1 — VARIABEL WARNA
+   Simpan semua warna di sini supaya
+   mudah diubah kalau mau ganti tema.
+   Dipanggil dengan: var(--namanya)
+════════════════════════════════ */
+:root {
+    --bg: #020408;
+    /* latar belakang utama */
+    --bg2: #060c18;
+    /* latar kartu/kotak */
+    --cyan: #00f5d4;
+    /* warna utama aksen */
+    --green: #0fff8a;
+    /* status OK / lolos */
+    --yellow: #ffe135;
+    /* status warning */
+    --red: #ff2d55;
+    /* status gagal */
+    --white: #d8eaf5;
+    /* teks utama */
+    --dim: #1a2e48;
+    /* teks redup/sekunder */
+}
+
+
+/* ════════════════════════════════
+   BAGIAN 2 — RESET
+   Hapus bawaan browser supaya
+   tampilan konsisten di semua browser.
+════════════════════════════════ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* ukuran elemen lebih mudah dihitung */
+}
+
+
+/* ════════════════════════════════
+   BAGIAN 3 — BODY
+   Tampilan dasar seluruh halaman.
+════════════════════════════════ */
+body {
+    background-color: var(--bg);
+    /* pakai warna dari variabel */
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    /* minimal setinggi layar */
+}
+
+
+/* ════════════════════════════════
+   BAGIAN 4 — NAVBAR
+════════════════════════════════ */
+#navbar {
+    position: fixed;
+    /* tetap di atas walau discroll */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(2, 4, 8, 0.95);
+    border-bottom: 1px solid rgba(0, 245, 212, 0.15);
+
+    /* susun isi navbar sejajar horizontal */
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+
+    z-index: 100;
+    /* selalu di atas elemen lain */
+}
+
+#nav-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--cyan);
+}
+
+#nav-sub {
+    font-size: 0.55rem;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+}
+
+#live-clock {
+    margin-left: auto;
+    /* dorong ke kanan */
+    font-size: 0.75rem;
+    color: var(--cyan);
+}
+
+#connection-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    /* animasi kedip */
+    animation: kedip 2s ease-in-out infinite;
+}
+
+#status-label {
+    font-size: 0.55rem;
+    color: rgba(0, 245, 212, 0.5);
+    letter-spacing: 0.1em;
+}
+
+
+/* ════════════════════════════════
+   BAGIAN 5 — ANIMASI
+   @keyframes = definisi gerak animasi
+════════════════════════════════ */
+@keyframes kedip {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}
