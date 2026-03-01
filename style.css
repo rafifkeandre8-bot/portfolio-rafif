@@ -188,3 +188,8 @@ body {
     font-size: 1rem;
     flex-shrink: 0;
 }
+
+.card.wqi {
+    grid-column: span 2;
+    text-align: center;
+}

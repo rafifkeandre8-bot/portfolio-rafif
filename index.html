@@ -77,7 +77,38 @@
             justify-content: center;
             font-size: 24px;
             font-weight: bold;
-            color: white
+            color: white;
+            transition: 0.3s ease;
+        }
+
+        .traffic.good {
+            background: #16a34a;
+            box-shadow: 0 0 20px rgba(22, 163, 74, 0.7);
+        }
+
+        .traffic.warning {
+            background: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.7);
+        }
+
+        .traffic.bad {
+            background: #ef4444;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         table {
@@ -294,9 +325,21 @@
         /* ========= TRAFFIC ========= */
         function updateTraffic(wqi) {
             const t = document.getElementById("traffic");
-            if (wqi > 80) { t.style.background = "green"; t.innerText = "GOOD"; }
-            else if (wqi > 50) { t.style.background = "orange"; t.innerText = "WARNING"; }
-            else { t.style.background = "red"; t.innerText = "BAD"; }
+
+            t.classList.remove("good", "warning", "bad");
+
+            if (wqi > 80) {
+                t.classList.add("good");
+                t.innerText = "GOOD";
+            }
+            else if (wqi > 50) {
+                t.classList.add("warning");
+                t.innerText = "WARNING";
+            }
+            else {
+                t.classList.add("bad");
+                t.innerText = "BAD";
+            }
         }
 
         /* ========= TOAST ========= */
