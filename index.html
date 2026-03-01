@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id">
 
@@ -88,4 +89,96 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Website Saya</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <h2 class="logo">Rafif</h2>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tentang">Tentang</a></li>
+            <li><a href="#skill">Skill</a></li>
+            <li><a href="#kontak">Kontak</a></li>
+        </ul>
+    </nav>
+
+
+    <section id="home" class="container reveal">
+        <h1>SECOTIX : Rancang Bangun Sistem Filtrasi Hybrid Elektrokoagulasi dan Filter Sekuensial Kitosan Bertenaga
+            Surya dengan Recirculation Loop Otomatis Berbasis IoT untuk Pengolahan Limbah Cair Batik Malang
+        </h1>
+        <p>Pelajar yang sedang belajar Web Development</p>
+        <button id="tombol">Lihat Skill</button>
+    </section>
+
+    <section id="tentang" class="container reveal">
+        <h2>Tentang Kami</h2>
+        <p>Kami tertarik pada teknologi, riset, dan pengembangan web.</p>
+    </section>
+
+    <section id="skill" class="container reveal">
+        <h2>Skill</h2>
+
+        <div class="skill">
+            <p>HTML</p>
+            <div class="bar">
+                <div class="progress html"></div>
+            </div>
+        </div>
+
+        <div class="skill">
+            <p>CSS</p>
+            <div class="bar">
+                <div class="progress css"></div>
+            </div>
+        </div>
+
+        <div class="skill">
+            <p>JavaScript</p>
+            <div class="bar">
+                <div class="progress js"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak" class="container reveal">
+        <h2>Kontak</h2>
+        <p>Email: rafifkeandre8@email.com</p>
+    </section>
+
+    <script>
+        document.getElementById("tombol").onclick = function () {
+            document.getElementById("skill").scrollIntoView({ behavior: "smooth" });
+        };
+    </script>
+
+    <script>
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll(".reveal");
+
+            reveals.forEach((el) => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const visiblePoint = 100;
+
+                if (elementTop < windowHeight - visiblePoint) {
+                    el.classList.add("active");
+                }
+            });
+        }
+
+        window.addEventListener("scroll", revealOnScroll);
+        revealOnScroll();
+    </script>
+</body>
+
+>>>>>>> 22d10dc50b8cefe67c45f0c179efb02538344b90
 </html>
