@@ -33,7 +33,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* ukuran elemen lebih mudah dihitung */
 }
 
 
@@ -43,11 +42,9 @@
 ════════════════════════════════ */
 body {
     background-color: var(--bg);
-    /* pakai warna dari variabel */
     color: var(--white);
     font-family: 'Share Tech Mono', monospace;
     min-height: 100vh;
-    /* minimal setinggi layar */
 }
 
 
@@ -56,22 +53,17 @@ body {
 ════════════════════════════════ */
 #navbar {
     position: fixed;
-    /* tetap di atas walau discroll */
     top: 0;
     left: 0;
     right: 0;
     height: 56px;
     background: rgba(2, 4, 8, 0.95);
     border-bottom: 1px solid rgba(0, 245, 212, 0.15);
-
-    /* susun isi navbar sejajar horizontal */
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 0 24px;
-
     z-index: 100;
-    /* selalu di atas elemen lain */
 }
 
 #nav-brand {
@@ -89,7 +81,6 @@ body {
 
 #live-clock {
     margin-left: auto;
-    /* dorong ke kanan */
     font-size: 0.75rem;
     color: var(--cyan);
 }
@@ -105,7 +96,6 @@ body {
     height: 8px;
     border-radius: 50%;
     background: var(--green);
-    /* animasi kedip */
     animation: kedip 2s ease-in-out infinite;
 }
 
@@ -118,7 +108,6 @@ body {
 
 /* ════════════════════════════════
    BAGIAN 5 — ANIMASI
-   @keyframes = definisi gerak animasi
 ════════════════════════════════ */
 @keyframes kedip {
 
@@ -130,4 +119,72 @@ body {
     50% {
         opacity: 0.2;
     }
+}
+
+
+/* ════════════════════════════════
+   BAGIAN 6 — PIPELINE
+   Alur 4 stage berjajar horizontal.
+════════════════════════════════ */
+#pipeline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    margin-top: 56px;
+    background: rgba(0, 10, 20, 0.8);
+    border-bottom: 1px solid rgba(0, 245, 212, 0.08);
+}
+
+.pipe-stage {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    background: #060c18;
+    border: 1px solid rgba(0, 245, 212, 0.12);
+    border-radius: 6px;
+    transition: border-color 0.3s;
+    cursor: default;
+}
+
+.pipe-stage:hover {
+    border-color: rgba(0, 245, 212, 0.4);
+}
+
+.pipe-code {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 3px;
+}
+
+.pipe-name {
+    font-size: 0.55rem;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.pipe-height {
+    font-size: 0.5rem;
+    color: rgba(0, 245, 212, 0.25);
+    margin-bottom: 6px;
+}
+
+.pipe-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    margin: 0 auto;
+    box-shadow: 0 0 6px var(--cyan);
+    animation: kedip 2s ease-in-out infinite;
+}
+
+.pipe-arrow {
+    color: rgba(0, 245, 212, 0.3);
+    font-size: 1rem;
+    flex-shrink: 0;
 }
