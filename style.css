@@ -45,6 +45,17 @@ body {
     color: var(--white);
     font-family: 'Share Tech Mono', monospace;
     min-height: 100vh;
+
+    .header {
+        background: #0f172a;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: bold;
+    }
 }
 
 
@@ -192,4 +203,16 @@ body {
 .card.wqi {
     grid-column: span 2;
     text-align: center;
+    backdrop-filter: blur(6px);
+}
+
+.header {
+    background: #0f172a;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: bold;
 }
